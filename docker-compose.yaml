@@ -1,0 +1,50 @@
+version: '3.7'
+
+networks:
+  cortex:
+    driver: bridge
+
+services:
+  airflow:
+    image: apache/airflow:2.10.3
+    container_name: airflow
+    environment:
+      - AIRFLOW__CORE__EXECUTOR=SequentialExecutor
+      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=sqlite:////opt/airflow/airflow.db
+#      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://cortex:cortex@postgresql:5432/cortex
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+    networks:
+      - cortex
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+      - ./plugins:/opt/airflow/plugins
+      - ./requirements.txt:/opt/airflow/requirements.txt
+
+    ports:
+      - "8080:8080"
+    command: >
+      bash -c "
+      pip install -r /opt/airflow/requirements.txt &&
+      airflow db init &&
+      airflow users create --username admin --password admin --firstname Admin --lastname User --role Admin --email admin@example.com &&
+      airflow standalone"
+    restart: always
+
+  postgresql:
+    container_name: postgresql
+    environment:
+      - POSTGRES_DB=cortex
+      - POSTGRES_PASSWORD=cortex
+      - POSTGRES_USER=cortex
+    image: postgres:latest
+    networks:
+      - cortex
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgresql:/var/lib/postgresql/data
+
+volumes:
+  postgresql:
+    driver: local

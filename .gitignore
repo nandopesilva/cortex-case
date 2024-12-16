@@ -1,0 +1,13 @@
+# Ignorar diretórios de logs
+logs/
+
+# Ignorar arquivos temporários do sistema
+*.log
+
+# Ignorar arquivos do sistema operacional
+.DS_Store
+Thumbs.db
+
+# Ignorar dados temporários
+data/
+outputs/
