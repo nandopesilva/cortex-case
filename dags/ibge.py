@@ -3,7 +3,7 @@ from datetime import datetime
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from scripts.extract import collect
-from scripts.load import load
+from scripts.load import load_csv, load_postgresql
 from scripts.transform import transform
 
 AREA_FILE = "./dags/data/AR_BR_RG_UF_RGINT_MES_MIC_MUN_2022.xls"
@@ -32,9 +32,13 @@ def __transform(**kwargs):
     kwargs["ti"].xcom_push(key="transform", value=df)
 
 
-def __load(**kwargs):
+def __load_csv(**kwargs):
     df = kwargs["ti"].xcom_pull(key="transform")
-    load(df)
+    load_csv(df)
+
+def __load_postgresql(**kwargs):
+    df = kwargs["ti"].xcom_pull(key="transform")
+    load_postgresql(df)
 
 
 with DAG(
@@ -62,10 +66,16 @@ with DAG(
         provide_context=True,
     )
 
-    task_load = PythonOperator(
-        task_id="load",
-        python_callable=__load,
+    task_load_csv = PythonOperator(
+        task_id="load_csv",
+        python_callable=__load_csv,
         provide_context=True,
     )
 
-    [task_area, task_population] >> task_transform >> task_load
+    task_load_postgresql = PythonOperator(
+        task_id="load_postresql",
+        python_callable=__load_postgresql,
+        provide_context=True,
+    )
+
+    [task_area, task_population] >> task_transform >> [task_load_csv, task_load_postgresql]
