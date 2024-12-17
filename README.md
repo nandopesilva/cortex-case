@@ -36,8 +36,8 @@ O pipeline é composto pelas seguintes tarefas, definidas na DAG `ibge`:
 
 1. Clone este repositório:
    ```bash
-   git clone https://github.com/seu-usuario/seu-repositorio.git
-   cd seu-repositorio
+   git clone https://github.com/nandopesilva/cortex-case
+   
 2. Inicie os serviços com Docker Compose:
 
 - docker-compose --project-name case up -d 
