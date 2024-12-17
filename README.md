@@ -21,7 +21,7 @@ Este projeto implementa um pipeline de análise demográfica do Brasil utilizand
 #### Fontes de Dados
 
 - [Área](https://geoftp.ibge.gov.br/organizacao_do_territorio/estrutura_territorial/areas_territoriais/2022/AR_BR_RG_UF_RGINT_MES_MIC_MUN_2022.xls)
-- [População](https://sidra.ibge.gov.br/tabela/6579)
+- [População](https://sidra.ibge.gov.br/geratabela?format=xlsx&name=tabela6579.xlsx&terr=N&rank=-&query=t/6579/n1/all/n2/all/n3/all/n6/all/v/all/p/last%201/l/v,p,t)
 
 ### Fluxo do Pipeline
 
