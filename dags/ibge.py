@@ -34,7 +34,8 @@ def __transform(**kwargs):
 
 def __load_csv(**kwargs):
     df = kwargs["ti"].xcom_pull(key="transform")
-    load_csv(df)
+    execution_date = kwargs['execution_date']
+    load_csv(df, execution_date=execution_date)
 
 def __load_postgresql(**kwargs):
     df = kwargs["ti"].xcom_pull(key="transform")
@@ -46,7 +47,7 @@ with DAG(
     description="Pipeline de Análise Demográfica com IBGE",
     schedule_interval="@daily",
     start_date=datetime(2024, 12, 1),
-    catchup=False,
+    catchup=True,
 ) as dag:
     task_area = PythonOperator(
         task_id="area",

@@ -7,9 +7,12 @@ from airflow.providers.postgres.hooks.postgres import PostgresHook
 logger = logging.getLogger(__name__)
 
 
-def load_csv(df, directory="./dags/outputs", file_base_name="dados_demograficos_IBGE"):
+def load_csv(df, directory="./dags/outputs", execution_date=None, file_base_name="dados_demograficos_IBGE"):
     try:
-        today = datetime.now().strftime("%Y%m%d")
+        if execution_date:
+            today = execution_date.strftime("%Y%m%d")
+        else:
+            today = datetime.now().strftime("%Y%m%d")
         file_name = f"{file_base_name}_{today}.csv"
         path = os.path.join(directory, file_name)
         df.to_csv(path, index=False, sep=",", encoding="utf-8")
