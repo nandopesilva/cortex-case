@@ -18,6 +18,9 @@ Este projeto implementa um pipeline de análise demográfica do Brasil utilizand
 - **`docker-compose.yml`**: Configuração para executar o Airflow e PostgreSQL com Docker.
 - **`requirements.txt`**: Dependências do projeto.
 
+Obs.: Os dados pupulacionais foram extraídos do link https://sidra.ibge.gov.br/tabela/6579 e os dados de área foram
+      extraídos do link https://geoftp.ibge.gov.br/organizacao_do_territorio/estrutura_territorial/areas_territoriais/2022/AR_BR_RG_UF_RGINT_MES_MIC_MUN_2022.xls
+
 ### Fluxo do Pipeline
 
 O pipeline é composto pelas seguintes tarefas, definidas na DAG `ibge`:
